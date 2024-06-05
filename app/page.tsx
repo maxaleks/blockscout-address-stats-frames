@@ -1,12 +1,14 @@
 import { fetchMetadata } from 'frames.js/next';
 import { Metadata } from 'next';
 
+import { BASE_URL } from './constants';
+
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Frames Next.js Example',
     other: {
       ...(await fetchMetadata(
-        new URL('/frames', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+        new URL('/frames', BASE_URL)
       )),
     },
   };
