@@ -7,8 +7,7 @@ import { frames } from '@/app/frames/frames';
 import { BASE_URL } from '@/app/constants';
 import getFonts from '@/app/fonts';
 import Layout from '@/app/components/layout';
-
-const BLOCKCHAIN_API_URL = 'https://eth.blockscout.com/api/v2';
+import { BLOCKSCOUT_API_URL, BLOCKSCOUT_URL } from '@/app/constants';
 
 const fetchData = async (url: string) => fetch(url).then((res) => res.json());
 
@@ -25,9 +24,9 @@ function calculateNetWorth(nativeToken: any, tokens: any[]) {
 
 async function getStats(address: string) {
   const [addressCounters, addressData, tokenBalancesData] = await Promise.all([
-    fetchData(`${BLOCKCHAIN_API_URL}/addresses/${address}/counters`),
-    fetchData(`${BLOCKCHAIN_API_URL}/addresses/${address}`),
-    fetchData(`${BLOCKCHAIN_API_URL}/addresses/${address}/token-balances`),
+    fetchData(`${BLOCKSCOUT_API_URL}/addresses/${address}/counters`),
+    fetchData(`${BLOCKSCOUT_API_URL}/addresses/${address}`),
+    fetchData(`${BLOCKSCOUT_API_URL}/addresses/${address}/token-balances`),
   ]);
 
   const txsCount = addressCounters.transactions_count;
@@ -201,8 +200,12 @@ const handleRequest = async (
         <Button action='post' target={{ query: { action: 'search' } }}>
           Search by address
         </Button>,
-        <Button action='link' target="https://example.com">Share</Button>,
-        <Button action='link' target="https://example.com">Open on Blockscout</Button>,
+        <Button action='link' target="https://example.com">
+          Share
+        </Button>,
+        <Button action='link' target={`${BLOCKSCOUT_URL}/address/${address}`}>
+          Open on Blockscout
+        </Button>,
       ],
       imageOptions: {
         fonts: await getFonts(),
