@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js';
 import { frames } from '@/app/frames/frames';
 import { BASE_URL } from '@/app/constants';
 import getFonts from '@/app/fonts';
+import Layout from '@/app/components/layout';
 
 const BLOCKCHAIN_API_URL = 'https://eth.blockscout.com/api/v2';
 
@@ -74,10 +75,7 @@ export const POST = frames(async (ctx) => {
 
   return {
     image: (
-      <div
-        tw='flex w-full h-full justify-center items-center'
-        style={{ background: 'linear-gradient(261.97deg, #E6EAFD 10.26%, #F2E9FE 27.54%, #F7EDFF 74.64%, #D3E4FF 99.73%)' }}
-      >
+      <Layout>
         <div tw='flex flex-col w-[630px]'>
           <div tw='flex items-center mb-6 w-full'>
             <img src={`${BASE_URL}/logo.svg`} height='80px' width='80px' tw='mr-5' />
@@ -121,7 +119,7 @@ export const POST = frames(async (ctx) => {
             </div>
           </div>
         </div>
-      </div>
+      </Layout>
     ),
     buttons: [
       <Button action='post' target='/'>
