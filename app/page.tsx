@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: 'Frames Next.js Example',
     other: {
       ...(await fetchMetadata(
-        new URL('/frames', BASE_URL)
+        new URL('/', BASE_URL)
       )),
     },
   };
