@@ -1,5 +1,6 @@
-import { frames } from './frames';
 import { Button } from 'frames.js/next';
+
+import { frames } from '@/app/frames/frames';
 
 export const GET = frames(async (ctx) => {
   return {

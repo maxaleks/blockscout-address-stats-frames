@@ -1,10 +1,9 @@
 /* eslint-disable react/jsx-key */
-import { frames } from '../frames';
 import { Button } from 'frames.js/next';
 import BigNumber from 'bignumber.js';
 
-import { BASE_URL } from '../../constants';
-
+import { frames } from '@/app/frames/frames';
+import { BASE_URL } from '@/app/constants';
 import getFonts from '@/app/fonts';
 
 const BLOCKCHAIN_API_URL = 'https://eth.blockscout.com/api/v2';

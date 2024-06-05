@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-key */
-import { frames } from '../../frames';
 import { Button } from 'frames.js/next';
 import { NextRequest } from 'next/server';
+
+import { frames } from '@/app/frames/frames';
 
 const handleRequest = async (
   req: NextRequest,

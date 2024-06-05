@@ -1,7 +1,7 @@
 import { fetchMetadata } from 'frames.js/next';
 import { Metadata } from 'next';
 
-import { BASE_URL } from './constants';
+import { BASE_URL } from '@/app/constants';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
