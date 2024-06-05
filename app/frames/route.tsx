@@ -62,6 +62,7 @@ const handleRequest = async (
           <Button action='post' target={{ query: { action: 'show_address_stats' } }}>
             Get stats
           </Button>,
+          <Button action='post'>Go back</Button>,
         ],
         imageOptions: {
           fonts: await getFonts(),
@@ -200,7 +201,13 @@ const handleRequest = async (
         <Button action='post' target={{ query: { action: 'search' } }}>
           Search by address
         </Button>,
-        <Button action='link' target="https://example.com">
+        <Button
+          action='link'
+          target={`https://warpcast.com/~/compose?${new URLSearchParams({
+            'text': `Check this address stats on Blockscout!\n\n${BLOCKSCOUT_URL}/address/${address}`,
+            'embeds[]': BASE_URL+'/frames'
+          }).toString()}`}
+        >
           Share
         </Button>,
         <Button action='link' target={`${BLOCKSCOUT_URL}/address/${address}`}>
