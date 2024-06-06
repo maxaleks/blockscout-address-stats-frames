@@ -2,6 +2,7 @@
 import { Button } from 'frames.js/next';
 import BigNumber from 'bignumber.js';
 import { NextRequest } from 'next/server';
+import { format } from 'date-fns';
 
 import { frames } from '@/app/frames/frames';
 import { BASE_URL } from '@/app/constants';
@@ -162,6 +163,21 @@ const handleRequest = async (
                   {address.slice(0, 10)}...{address.slice(-4)}
                 </span>
               )}
+            </div>
+            <div tw='flex justify-between text-sm text-[#5353D3] mb-4'>
+              <div tw='flex items-center'>
+                Address stats on
+                <div tw='flex items-center ml-2 mr-3 font-medium'>
+                  <img src={`${BASE_URL}/network-logo.svg`} height='20px' width='20px' tw='mr-1' />
+                  Base,
+                </div>
+                {format(Date(), 'MMM d, yyyy')}
+              </div>
+              <div tw='flex items-center'>
+                Go to
+                <img src={`${BASE_URL}/logo-with-text.svg`} height='18px' tw='mx-2 mt--0.5' />
+                to get more details
+              </div>
             </div>
             <div tw='flex w-full'>
               <div tw='flex flex-col flex-3 mr-2'>
