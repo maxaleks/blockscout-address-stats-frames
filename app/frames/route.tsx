@@ -205,7 +205,7 @@ const handleRequest = async (
           action='link'
           target={`https://warpcast.com/~/compose?${new URLSearchParams({
             'text': `Check this address stats on Blockscout!\n\n${BLOCKSCOUT_URL}/address/${address}`,
-            'embeds[]': BASE_URL+'/frames'
+            'embeds[]': `${BASE_URL}/frames/stats/${address}`,
           }).toString()}`}
         >
           Share
