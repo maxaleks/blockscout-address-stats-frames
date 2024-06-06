@@ -139,12 +139,12 @@ const handleRequest = async (
               <img src={`${BASE_URL}/logo.svg`} height='100px' width='100px' tw='mr-5' />
               {stats.ens ? (
                 <div tw='flex flex-col h-full justify-between'>
-                  <span tw='text-6xl font-bold'>{stats.ens}</span>
-                  <span tw='text-2xl'>{address}</span>
+                  <span tw='text-5xl font-bold'>{stats.ens}</span>
+                  <span tw='text-3xl'>{address}</span>
                 </div>
               ) : (
-                <span tw='text-6xl font-bold truncate'>
-                  {address.slice(0, 16)}...{address.slice(-4)}
+                <span tw='text-5xl font-bold truncate'>
+                  {address.slice(0, 20)}...{address.slice(-4)}
                 </span>
               )}
             </div>
@@ -167,26 +167,26 @@ const handleRequest = async (
               <div tw='flex flex-col flex-3 mr-4'>
                 <div tw='flex flex-col px-10 py-6 bg-white rounded-xl mb-4'>
                   <span tw='text-2xl font-medium mb-2'>Net worth</span>
-                  <span tw='text-4xl font-semibold'>$ {stats.netWorth}</span>
+                  <span tw='text-3xl font-semibold'>$ {stats.netWorth}</span>
                 </div>
                 <div tw='flex flex-col px-10 py-6 bg-white rounded-xl'>
                   <span tw='text-2xl font-medium mb-2'>ETH balance</span>
-                  <span tw='text-4xl font-semibold'>{stats.nativeBalance} ETH</span>
+                  <span tw='text-3xl font-semibold'>{stats.nativeBalance} ETH</span>
                 </div>
               </div>
               <div tw='flex flex-col flex-2'>
                 <div tw='flex flex-col px-10 py-6 bg-white rounded-xl mb-4'>
                   <span tw='text-2xl font-medium mb-2'>Transactions</span>
-                  <span tw='text-4xl font-semibold'>{stats.txsCount}</span>
+                  <span tw='text-3xl font-semibold'>{stats.txsCount}</span>
                 </div>
                 <div tw='flex flex-1'>
                   <div tw='flex flex-col flex-1 px-10 py-6 bg-white rounded-xl mr-4'>
                     <span tw='text-2xl font-medium mb-2'>Tokens</span>
-                    <span tw='text-4xl font-semibold'>{stats.tokensCount}</span>
+                    <span tw='text-3xl font-semibold'>{stats.tokensCount}</span>
                   </div>
                   <div tw='flex flex-col flex-1 px-10 py-6 bg-white rounded-xl'>
                     <span tw='text-2xl font-medium mb-2'>NFTs</span>
-                    <span tw='text-4xl font-semibold'>{stats.nftsCount}</span>
+                    <span tw='text-3xl font-semibold'>{stats.nftsCount}</span>
                   </div>
                 </div>
               </div>
