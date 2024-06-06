@@ -40,6 +40,17 @@ async function getStats(address: string) {
   return { ens, txsCount, netWorth, nativeBalance, tokensCount, nftsCount };
 }
 
+const getIntermediateFrame = (text: string, iconName = 'no-results') => (
+  <Layout>
+    <img src={`${BASE_URL}/${iconName}.svg`} height='350px' width='450px' tw='mb-5' />
+    {text.split('\n').map((line, index) => (
+      <span key={index} tw='text-3xl font-medium text-[#5353D3] mb-12'>
+        {line}
+      </span>
+    ))}
+  </Layout>
+);
+
 const handleRequest = async (
   req: NextRequest,
   { params: urlParams }: { params: any }
@@ -48,17 +59,7 @@ const handleRequest = async (
     if (ctx.searchParams.action === 'search') {
       return {
         textInput: 'Enter an EOA address',
-        image: (
-          <Layout>
-            <img src={`${BASE_URL}/search.svg`} height='300px' width='390px' tw='mb-5' />
-            <span tw='text-3xl font-medium text-[#5353D3]'>
-              Enter 0x... address or ENS to find stats
-            </span>
-            <span tw='text-3xl font-medium text-[#5353D3]'>
-              about a user's wallet
-            </span>
-          </Layout>
-        ),
+        image: getIntermediateFrame(`Enter 0x... address or ENS to find stats\n about a user's wallet`, 'search'),
         buttons: [
           <Button action='post' target={{ query: { action: 'show_address_stats' } }}>
             Get stats
@@ -77,15 +78,7 @@ const handleRequest = async (
       address = ctx.message?.requesterVerifiedAddresses?.[0];
       if (!address) {
         return {
-          textInput: 'Enter an EOA address',
-          image: (
-            <Layout>
-              <img src={`${BASE_URL}/no-results.svg`} height='300px' width='390px' tw='mb-5' />
-              <span tw='text-3xl font-medium text-[#5353D3]'>
-                No address linked to your account.
-              </span>
-            </Layout>
-          ),
+          image: getIntermediateFrame('No address linked to your account.'),
           buttons: [
             <Button action='post'>Go back</Button>,
           ],
@@ -96,17 +89,7 @@ const handleRequest = async (
       if (!address) {
         return {
           textInput: 'Enter an EOA address',
-          image: (
-            <Layout>
-              <img src={`${BASE_URL}/no-results.svg`} height='300px' width='390px' tw='mb-5' />
-              <span tw='text-3xl font-medium text-[#5353D3]'>
-                Couldn't find any information.
-              </span>
-              <span tw='text-3xl font-medium text-[#5353D3]'>
-                Please, try again.
-              </span>
-            </Layout>
-          ),
+          image: getIntermediateFrame(`Couldn't find any information.\n Please, try again.`),
           buttons: [
             <Button action='post' target={{ query: { action: 'show_address_stats' } }}>
               Get stats
@@ -128,14 +111,7 @@ const handleRequest = async (
     } catch (e) {
       console.error(e);
       return {
-        image: (
-          <Layout>
-            <img src={`${BASE_URL}/no-results.svg`} height='300px' width='390px' tw='mb-5' />
-            <span tw='text-3xl font-medium text-[#5353D3]'>
-              Failed to fetch stats.
-            </span>
-          </Layout>
-        ),
+        image: getIntermediateFrame(`Couldn't find any information.\n Please, try again.`),
         buttons: [
           <Button action='post' target={{ query: { action: 'show_my_stats' } }}>
             My stats
