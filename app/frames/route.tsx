@@ -138,10 +138,10 @@ const handleRequest = async (
         ),
         buttons: [
           <Button action='post' target={{ query: { action: 'show_my_stats' } }}>
-            Show my stats
+            My stats
           </Button>,
           <Button action='post' target={{ query: { action: 'search' } }}>
-            Search by address
+            Find by address
           </Button>,
         ],
       };;
@@ -212,10 +212,10 @@ const handleRequest = async (
       ),
       buttons: [
         <Button action='post' target={{ query: { action: 'show_my_stats' } }}>
-          Show my stats
+          My stats
         </Button>,
         <Button action='post' target={{ query: { action: 'search' } }}>
-          Search by address
+          Find by EOA
         </Button>,
         <Button
           action='link'
@@ -227,7 +227,7 @@ const handleRequest = async (
           Share
         </Button>,
         <Button action='link' target={`${BLOCKSCOUT_URL}/address/${address}`}>
-          Open on Blockscout
+          Open
         </Button>,
       ],
       imageOptions: {
