@@ -3,6 +3,7 @@ import { Button } from 'frames.js/next';
 import BigNumber from 'bignumber.js';
 import { NextRequest } from 'next/server';
 import { format } from 'date-fns';
+import { isAddress } from 'ethers';
 
 import { frames } from '@/app/frames/frames';
 import { BASE_URL } from '@/app/constants';
@@ -106,6 +107,13 @@ const handleRequest = async (
     try {
       if (!address) {
         throw new Error('No address provided');
+      }
+      if (!isAddress(address)) {
+        const searchData = await fetchData(`${BLOCKSCOUT_API_URL}/search?q=${address}`);
+        address = searchData.items.find((item: any) => item.type === 'ens_domain')?.address;
+        if (!address) {
+          throw new Error('No address found');
+        }
       }
       stats = await getStats(address);
     } catch (e) {
