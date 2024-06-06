@@ -51,10 +51,10 @@ const handleRequest = async (
         image: (
           <Layout>
             <img src={`${BASE_URL}/search.svg`} height='300px' width='390px' tw='mb-5' />
-            <span tw='text-xl font-medium text-[#5353D3]'>
+            <span tw='text-3xl font-medium text-[#5353D3]'>
               Enter 0x... address or ENS to find stats
             </span>
-            <span tw='text-xl font-medium text-[#5353D3]'>
+            <span tw='text-3xl font-medium text-[#5353D3]'>
               about a user's wallet
             </span>
           </Layout>
@@ -81,7 +81,7 @@ const handleRequest = async (
           image: (
             <Layout>
               <img src={`${BASE_URL}/no-results.svg`} height='300px' width='390px' tw='mb-5' />
-              <span tw='text-xl font-medium text-[#5353D3]'>
+              <span tw='text-3xl font-medium text-[#5353D3]'>
                 No address linked to your account.
               </span>
             </Layout>
@@ -99,10 +99,10 @@ const handleRequest = async (
           image: (
             <Layout>
               <img src={`${BASE_URL}/no-results.svg`} height='300px' width='390px' tw='mb-5' />
-              <span tw='text-xl font-medium text-[#5353D3]'>
+              <span tw='text-3xl font-medium text-[#5353D3]'>
                 Couldn't find any information.
               </span>
-              <span tw='text-xl font-medium text-[#5353D3]'>
+              <span tw='text-3xl font-medium text-[#5353D3]'>
                 Please, try again.
               </span>
             </Layout>
@@ -131,7 +131,7 @@ const handleRequest = async (
         image: (
           <Layout>
             <img src={`${BASE_URL}/no-results.svg`} height='300px' width='390px' tw='mb-5' />
-            <span tw='text-xl font-medium text-[#5353D3]'>
+            <span tw='text-3xl font-medium text-[#5353D3]'>
               Failed to fetch stats.
             </span>
           </Layout>
@@ -150,59 +150,59 @@ const handleRequest = async (
     return {
       image: (
         <Layout>
-          <div tw='flex flex-col w-[630px]'>
-            <div tw='flex items-center mb-6 w-full'>
-              <img src={`${BASE_URL}/logo.svg`} height='80px' width='80px' tw='mr-5' />
+          <div tw='flex flex-col w-full'>
+            <div tw='flex items-center mb-10 w-full'>
+              <img src={`${BASE_URL}/logo.svg`} height='100px' width='100px' tw='mr-5' />
               {stats.ens ? (
                 <div tw='flex flex-col h-full justify-between'>
-                  <span tw='text-5xl font-bold'>{stats.ens}</span>
-                  <span tw='text-xl'>{address}</span>
+                  <span tw='text-6xl font-bold'>{stats.ens}</span>
+                  <span tw='text-2xl'>{address}</span>
                 </div>
               ) : (
-                <span tw='text-5xl font-bold truncate'>
-                  {address.slice(0, 10)}...{address.slice(-4)}
+                <span tw='text-6xl font-bold truncate'>
+                  {address.slice(0, 16)}...{address.slice(-4)}
                 </span>
               )}
             </div>
-            <div tw='flex justify-between text-sm text-[#5353D3] mb-4'>
+            <div tw='flex justify-between text-2xl text-[#5353D3] mb-6'>
               <div tw='flex items-center'>
                 Address stats on
-                <div tw='flex items-center ml-2 mr-3 font-medium'>
-                  <img src={`${BASE_URL}/network-logo.svg`} height='20px' width='20px' tw='mr-1' />
+                <div tw='flex items-center ml-3 mr-4 font-medium'>
+                  <img src={`${BASE_URL}/network-logo.svg`} height='30px' width='30px' tw='mr-1' />
                   Base,
                 </div>
                 {format(Date(), 'MMM d, yyyy')}
               </div>
               <div tw='flex items-center'>
                 Go to
-                <img src={`${BASE_URL}/logo-with-text.svg`} height='18px' tw='mx-2 mt--0.5' />
+                <img src={`${BASE_URL}/logo-with-text.svg`} height='30px' tw='mx-3 mt--1' />
                 to get more details
               </div>
             </div>
             <div tw='flex w-full'>
-              <div tw='flex flex-col flex-3 mr-2'>
-                <div tw='flex flex-col px-5 py-3 bg-white rounded-lg mb-2'>
-                  <span tw='text-sm font-medium mb-1'>Net worth</span>
-                  <span tw='text-xl font-semibold'>$ {stats.netWorth}</span>
+              <div tw='flex flex-col flex-3 mr-4'>
+                <div tw='flex flex-col px-10 py-6 bg-white rounded-xl mb-4'>
+                  <span tw='text-2xl font-medium mb-2'>Net worth</span>
+                  <span tw='text-4xl font-semibold'>$ {stats.netWorth}</span>
                 </div>
-                <div tw='flex flex-col px-5 py-3 bg-white rounded-lg'>
-                  <span tw='text-sm font-medium mb-1'>ETH balance</span>
-                  <span tw='text-xl font-semibold'>{stats.nativeBalance} ETH</span>
+                <div tw='flex flex-col px-10 py-6 bg-white rounded-xl'>
+                  <span tw='text-2xl font-medium mb-2'>ETH balance</span>
+                  <span tw='text-4xl font-semibold'>{stats.nativeBalance} ETH</span>
                 </div>
               </div>
               <div tw='flex flex-col flex-2'>
-                <div tw='flex flex-col px-5 py-3 bg-white rounded-lg mb-2'>
-                  <span tw='text-sm font-medium mb-1'>Transactions</span>
-                  <span tw='text-xl font-semibold'>{stats.txsCount}</span>
+                <div tw='flex flex-col px-10 py-6 bg-white rounded-xl mb-4'>
+                  <span tw='text-2xl font-medium mb-2'>Transactions</span>
+                  <span tw='text-4xl font-semibold'>{stats.txsCount}</span>
                 </div>
                 <div tw='flex flex-1'>
-                  <div tw='flex flex-col flex-1 px-5 py-3 bg-white rounded-lg mr-2'>
-                    <span tw='text-sm font-medium mb-1'>Tokens</span>
-                    <span tw='text-xl font-semibold'>{stats.tokensCount}</span>
+                  <div tw='flex flex-col flex-1 px-10 py-6 bg-white rounded-xl mr-4'>
+                    <span tw='text-2xl font-medium mb-2'>Tokens</span>
+                    <span tw='text-4xl font-semibold'>{stats.tokensCount}</span>
                   </div>
-                  <div tw='flex flex-col flex-1 px-5 py-3 bg-white rounded-lg'>
-                    <span tw='text-sm font-medium mb-1'>NFTs</span>
-                    <span tw='text-xl font-semibold'>{stats.nftsCount}</span>
+                  <div tw='flex flex-col flex-1 px-10 py-6 bg-white rounded-xl'>
+                    <span tw='text-2xl font-medium mb-2'>NFTs</span>
+                    <span tw='text-4xl font-semibold'>{stats.nftsCount}</span>
                   </div>
                 </div>
               </div>
