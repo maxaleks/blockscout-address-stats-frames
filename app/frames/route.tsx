@@ -122,7 +122,7 @@ const handleRequest = async (
     }
 
     address = address || urlParams?.address;
-    const network = ctx.searchParams.network || urlParams?.network;
+    const network = ctx.searchParams.network || urlParams?.network || Object.keys(NETWORKS)[0];
 
     let stats = null;
     try {
