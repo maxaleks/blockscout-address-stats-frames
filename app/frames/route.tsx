@@ -9,7 +9,7 @@ import { frames } from '@/app/frames/frames';
 import { BASE_URL } from '@/app/constants';
 import getFonts from '@/app/fonts';
 import Layout from '@/app/components/layout';
-import { BLOCKSCOUT_API_URL, BLOCKSCOUT_URL } from '@/app/constants';
+import { NETWORKS } from '@/app/constants';
 
 const fetchData = async (url: string) => fetch(url).then((res) => res.json());
 
@@ -24,12 +24,16 @@ function calculateNetWorth(nativeToken: any, tokens: any[]) {
   ].reduce((acc, value) => acc.plus(value), BigNumber(0)).toString();
 }
 
-async function getStats(address: string) {
-  const [addressCounters, addressData, tokenBalancesData] = await Promise.all([
-    fetchData(`${BLOCKSCOUT_API_URL}/addresses/${address}/counters`),
-    fetchData(`${BLOCKSCOUT_API_URL}/addresses/${address}`),
-    fetchData(`${BLOCKSCOUT_API_URL}/addresses/${address}/token-balances`),
+async function getStats(address: string, network: string) {
+  let [addressCounters, addressData, tokenBalancesData] = await Promise.all([
+    fetchData(`${NETWORKS[network].explorerUrl}/api/v2/addresses/${address}/counters`),
+    fetchData(`${NETWORKS[network].explorerUrl}/api/v2/addresses/${address}`),
+    fetchData(`${NETWORKS[network].explorerUrl}/api/v2/addresses/${address}/token-balances`),
   ]);
+
+  if (!Array.isArray(tokenBalancesData)) {
+    tokenBalancesData = [];
+  }
 
   const txsCount = addressCounters.transactions_count;
   const ens = addressData.ens_domain_name;
@@ -57,15 +61,31 @@ const handleRequest = async (
   { params: urlParams }: { params: any }
 ) => {
   return await frames(async (ctx) => {
+    if (ctx.searchParams.action === 'select_network') {
+      return {
+        image: getIntermediateFrame('Select the network', 'search'),
+        buttons: Object.keys(NETWORKS).map((network) => (
+          <Button
+            action='post'
+            target={{ query: { action: ctx.searchParams.nextAction, network } }}
+          >
+            {NETWORKS[network].name}
+          </Button>
+        )),
+        imageOptions: {
+          fonts: await getFonts(),
+        },
+      };
+    }
+
     if (ctx.searchParams.action === 'search') {
       return {
         textInput: 'Enter an EOA address',
         image: getIntermediateFrame(`Enter 0x... address or ENS to find stats\n about a user's wallet`, 'search'),
         buttons: [
-          <Button action='post' target={{ query: { action: 'show_address_stats' } }}>
+          <Button action='post' target={{ query: { action: 'show_address_stats', network: ctx.searchParams.network } }}>
             Get stats
           </Button>,
-          <Button action='post'>Go back</Button>,
         ],
         imageOptions: {
           fonts: await getFonts(),
@@ -102,6 +122,7 @@ const handleRequest = async (
     }
 
     address = address || urlParams?.address;
+    const network = ctx.searchParams.network || urlParams?.network;
 
     let stats = null;
     try {
@@ -109,26 +130,26 @@ const handleRequest = async (
         throw new Error('No address provided');
       }
       if (!isAddress(address)) {
-        const searchData = await fetchData(`${BLOCKSCOUT_API_URL}/search?q=${address}`);
+        const searchData = await fetchData(`${NETWORKS[network].explorerUrl}/api/v2/search?q=${address}`);
         address = searchData.items.find((item: any) => item.type === 'ens_domain')?.address;
         if (!address) {
           throw new Error('No address found');
         }
       }
-      stats = await getStats(address);
+      stats = await getStats(address, network);
     } catch (e) {
       console.error(e);
       return {
         image: getIntermediateFrame(`Couldn't find any information.\n Please, try again.`),
         buttons: [
-          <Button action='post' target={{ query: { action: 'show_my_stats' } }}>
+          <Button action='post' target={{ query: { action: 'select_network', nextAction: 'show_my_stats' } }}>
             My stats
           </Button>,
-          <Button action='post' target={{ query: { action: 'search' } }}>
+          <Button action='post' target={{ query: { action: 'select_network', nextAction: 'search' } }}>
             Find by address
           </Button>,
         ],
-      };;
+      };
     }
 
     return {
@@ -136,7 +157,7 @@ const handleRequest = async (
         <Layout>
           <div tw='flex flex-col w-full'>
             <div tw='flex items-center mb-10 w-full'>
-              <img src={`${BASE_URL}/logo.svg`} height='100px' width='100px' tw='mr-5' />
+              <img src={`${BASE_URL}/networks/${NETWORKS[network].name.toLowerCase()}.svg`} height='100px' tw='mr-5' />
               {stats.ens ? (
                 <div tw='flex flex-col h-full justify-between'>
                   <span tw='text-5xl font-bold'>{stats.ens}</span>
@@ -151,9 +172,9 @@ const handleRequest = async (
             <div tw='flex justify-between text-2xl text-[#5353D3] mb-6'>
               <div tw='flex items-center'>
                 Address stats on
-                <div tw='flex items-center ml-3 mr-4 font-medium'>
-                  <img src={`${BASE_URL}/network-logo.svg`} height='30px' width='30px' tw='mr-1' />
-                  Base,
+                <div tw='flex items-center ml-3 mr-3 font-medium'>
+                  <img src={`${BASE_URL}/networks/${NETWORKS[network].name.toLowerCase()}.svg`} height='30px' tw='mr-1' />
+                  {NETWORKS[network].name},
                 </div>
                 {format(Date(), 'MMM d, yyyy')}
               </div>
@@ -170,8 +191,8 @@ const handleRequest = async (
                   <span tw='text-3xl font-semibold'>$ {stats.netWorth}</span>
                 </div>
                 <div tw='flex flex-col px-10 py-6 bg-white rounded-xl'>
-                  <span tw='text-2xl font-medium mb-2'>ETH balance</span>
-                  <span tw='text-3xl font-semibold'>{stats.nativeBalance} ETH</span>
+                  <span tw='text-2xl font-medium mb-2'>{NETWORKS[network].tokenSymbol} balance</span>
+                  <span tw='text-3xl font-semibold'>{stats.nativeBalance} {NETWORKS[network].tokenSymbol}</span>
                 </div>
               </div>
               <div tw='flex flex-col flex-2'>
@@ -195,22 +216,22 @@ const handleRequest = async (
         </Layout>
       ),
       buttons: [
-        <Button action='post' target={{ query: { action: 'show_my_stats' } }}>
+        <Button action='post' target={{ query: { action: 'select_network', nextAction: 'show_my_stats' } }}>
           My stats
         </Button>,
-        <Button action='post' target={{ query: { action: 'search' } }}>
+        <Button action='post' target={{ query: { action: 'select_network', nextAction: 'search' } }}>
           Find by EOA
         </Button>,
         <Button
           action='link'
           target={`https://warpcast.com/~/compose?${new URLSearchParams({
-            'text': `Just found address statistics on Base using @blockscout\nCheck out more details directly on #blockscout\n\n${BLOCKSCOUT_URL}/address/${address}`,
-            'embeds[]': `${BASE_URL}/frames/stats/${address}`,
+            'text': `Just found address statistics on ${NETWORKS[network].name} using @blockscout\nCheck out more details directly on #blockscout\n\n${NETWORKS[network].explorerUrl}/address/${address}`,
+            'embeds[]': `${BASE_URL}/frames/stats/${network}/${address}`,
           }).toString()}`}
         >
           Share
         </Button>,
-        <Button action='link' target={`${BLOCKSCOUT_URL}/address/${address}`}>
+        <Button action='link' target={`${NETWORKS[network].explorerUrl}/address/${address}`}>
           Open
         </Button>,
       ],
